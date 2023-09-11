@@ -32,6 +32,9 @@ dependencies = [
   "python-liquid >= 1.10.0"
 ]
 
+[project.optional-dependencies]
+certifi = ["certifi"]
+
 [project.urls]
 "Homepage" = "https://github.com/qkitgroup/dokuwiki-autodoc"
 "Bug Tracker" = "https://github.com/qkitgroup/dokuwiki-autodoc/issues"

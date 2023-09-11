@@ -13,14 +13,22 @@ class AutoDocumentation():
     This is to prevent data loss.
     """
 
-    def __init__(self, server):
+    def __init__(self, server, use_certifi=False):
         """
         Create a connection to the wiki on the server.
         Interactively querries the username and password.
+        If required, certifi can be used as a trust store.
         """
         username = input("Wiki user: ")
         password = getpass.getpass("Wiki password: ")
-        self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)
+        if use_certifi:
+            import certifi
+            import ssl
+            context = ssl.create_default_context()
+            context.load_verify_locations(cafile=certifi.where())
+            self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True, context=context)
+        else:
+            self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)
         logging.info(f"Connected to Wiki: {self.wiki.title}")
 
     def append_table(self, page: str, columns: List[str], data: List):
