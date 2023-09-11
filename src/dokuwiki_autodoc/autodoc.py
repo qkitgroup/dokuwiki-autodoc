@@ -153,7 +153,6 @@ class QkitDocumentationBuilder():
         self._image_ids = []
         self._data = _Object() # Store data available to the Liquid template
         self._data.overview_page = overview_page 
-        self._report_id = AutoDocumentation.join_path([self.overview_page, self.UUID])
         
 
     def __enter__(self):
@@ -166,6 +165,7 @@ class QkitDocumentationBuilder():
         if not self.UUID:
             self.UUID = qkit.fid.get_last()
 
+        self._report_id = AutoDocumentation.join_path([self.overview_page, self.UUID])
         self._h5path = qkit.fid.get(self.UUID)
         self._h5data = Data(self._h5path)
         self._data.measurement = json.loads(self._h5data.data.measurement[:][0])
