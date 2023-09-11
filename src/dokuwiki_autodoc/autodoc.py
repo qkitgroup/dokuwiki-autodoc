@@ -189,7 +189,7 @@ class QkitDocumentationBuilder():
     def generate_report(self, template, **context):
         all_data = copy.copy(self._data)
         all_data.__dict__.update(context)
-        self.autodoc.generate_report(self._report_id, all_data, template)
+        self.autodoc.generate_report(self._report_id, all_data.__dict__, template)
 
 
     def generate_table_entry(self, columns: List[str], generator: Callable[[any], List], **context):
