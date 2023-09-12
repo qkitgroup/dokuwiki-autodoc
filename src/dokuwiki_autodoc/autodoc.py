@@ -5,6 +5,7 @@ from typing import Any, Callable, Dict, Iterable, List, Union
 from os import PathLike, path, listdir
 import liquid
 import copy
+from dokuwiki_autodoc.liquid_filters import dict2doku
 
 class AutoDocumentation():
     """
@@ -30,6 +31,10 @@ class AutoDocumentation():
         else:
             self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)
         logging.info(f"Connected to Wiki: {self.wiki.title}")
+
+        self._liquid_environment = liquid.Environment(tag_start_string="[%", tag_end_string="%]", 
+                                   statement_start_string="[[", statement_end_string="]]")
+        self._liquid_environment.add_filter("dict2doku", dict2doku)
 
     def append_table(self, page: str, columns: List[str], data: List):
         """
@@ -106,8 +111,7 @@ class AutoDocumentation():
         Uses the liquid templating language, but instead of curly braces, it uses square brackets, because dokuwiki
         already uses curly braces.
         """
-        template = liquid.Template(template_str, tag_start_string="[%", tag_end_string="%]", 
-                                   statement_start_string="[[", statement_end_string="]]")
+        template = self._liquid_environment.from_string(template_str)
         report = template.render(**data)
         assert not self.wiki.pages.get(page), "Page already exists!"
         self.wiki.pages.set(page, report, sum="Automatic Report Generation.")

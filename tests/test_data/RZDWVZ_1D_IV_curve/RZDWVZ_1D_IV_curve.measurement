@@ -1,0 +1,50 @@
+{
+    "analyzed": false,
+    "average": 1,
+    "git_commit_id": "ab3e1e2f0785e3aad761af920cf69238a494f03d",
+    "hdf_relpath": "GEQCOS-V5-W1\\Thilo\\RZDWVZ_1D_IV_curve\\RZDWVZ_1D_IV_curve.h5",
+    "instruments": {
+        "IVD": {}
+    },
+    "measurement_func": "measure_1D",
+    "measurement_type": "transport",
+    "rating": 3,
+    "run_id": "GEQCOS-V5-W1",
+    "sample": {
+        "average": 1,
+        "comment": "Hope for the Best.",
+        "name": "XJJ",
+        "sweeps": [
+            [
+                0,
+                5e-05,
+                2.5e-06,
+                0
+            ],
+            [
+                5e-05,
+                0,
+                2.5e-06,
+                0
+            ],
+            [
+                0,
+                -5e-05,
+                2.5e-06,
+                0
+            ],
+            [
+                -5e-05,
+                0,
+                2.5e-06,
+                0
+            ]
+        ]
+    },
+    "user": "Thilo",
+    "uuid": "RZDWVZ",
+    "web_visible": true,
+    "x_axis": "voltage",
+    "y_axis": "",
+    "z_axis": ""
+}
