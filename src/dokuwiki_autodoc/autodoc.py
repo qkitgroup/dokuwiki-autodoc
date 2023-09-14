@@ -6,6 +6,10 @@ from os import PathLike, path, listdir
 import liquid
 import copy
 from dokuwiki_autodoc.liquid_filters import dict2doku
+from liquid_babel.filters import Unit, Number
+from liquid.extra import add_inheritance_tags
+from liquid.loaders import DictLoader, CachingFileSystemLoader
+from importlib.resources import files
 
 class AutoDocumentation():
     """
@@ -32,9 +36,7 @@ class AutoDocumentation():
             self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)
         logging.info(f"Connected to Wiki: {self.wiki.title}")
 
-        self._liquid_environment = liquid.Environment(tag_start_string="[%", tag_end_string="%]", 
-                                   statement_start_string="[[", statement_end_string="]]")
-        self._liquid_environment.add_filter("dict2doku", dict2doku)
+        self._liquid_environment = AutoDocumentation.build_default_liquid()
 
     def append_table(self, page: str, columns: List[str], data: List):
         """
@@ -116,6 +118,8 @@ class AutoDocumentation():
         assert not self.wiki.pages.get(page), "Page already exists!"
         self.wiki.pages.set(page, report, sum="Automatic Report Generation.")
 
+    def with_templates(self, template_directory=None):
+        AutoDocumentation.load_templates(self._liquid_environment, template_directory)
 
     @staticmethod
     def format_link(target: str, text: str = None) -> str:
@@ -131,6 +135,30 @@ class AutoDocumentation():
     @staticmethod
     def join_path(iterable: Iterable) -> str:
         return ":".join(iterable)
+    
+    @staticmethod
+    def build_default_liquid() -> liquid.Environment:
+        env = liquid.Environment(tag_start_string="[%", tag_end_string="%]", 
+                                   statement_start_string="[[", statement_end_string="]]")
+        env.add_filter("dict2doku", dict2doku)
+        env.add_filter("decimal", Number())
+        env.add_filter("unit", Unit(default_length='short'))
+        add_inheritance_tags(env)
+        return env
+    
+    @staticmethod
+    def load_templates(environment, path=None):
+        """
+        Load liquid templates. If no path is given, package templates are loaded.
+        The package templates serve as a baseline and try to simplify interaction with qkit.
+        """
+        if path == None:
+            package = files("dokuwiki_autodoc.templates")
+            templates = {resource.name : package.joinpath(resource.name).read_text()
+                          for resource in package.iterdir() if resource.is_file() and resource.name.endswith(".liquid") }
+            environment.loader = DictLoader(templates)
+        else:
+            environment.loader = CachingFileSystemLoader(path)
 
 class _Object(object):
     def __getitem__(self, key: str) -> Any:

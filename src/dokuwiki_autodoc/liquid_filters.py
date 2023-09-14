@@ -11,7 +11,7 @@ def dict2doku(obj: object, max_heading: Optional[object] = None) -> str:
     for key in d:
         value = d[key]
         if is_primitve(value):
-            lines += f"{key}: {value}\n"
+            lines += f"  * {key}: {value}\n"
         else:
             complex_lines += format_heading(key, heading)
             complex_lines += dict2doku(value, heading - 1)
