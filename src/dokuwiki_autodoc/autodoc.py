@@ -138,8 +138,8 @@ class AutoDocumentation():
     
     @staticmethod
     def build_default_liquid() -> liquid.Environment:
-        env = liquid.Environment(tag_start_string="[%", tag_end_string="%]", 
-                                   statement_start_string="[[", statement_end_string="]]")
+        env = liquid.Environment(tag_start_string="{%", tag_end_string="%}", 
+                                   statement_start_string="{[", statement_end_string="]}")
         env.add_filter("dict2doku", dict2doku)
         env.add_filter("decimal", Number())
         env.add_filter("unit", Unit(default_length='short'))

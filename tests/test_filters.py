@@ -33,18 +33,18 @@ def test_dict_format(liquid_env):
         },
         'primitive_5': 456
     }
-    result = liquid_env.from_string("[[test_object | dict2doku]]").render(test_object=test_object).strip()
+    result = liquid_env.from_string(r"{[test_object | dict2doku]}").render(test_object=test_object).strip()
     assert result == expectation
 
 
 def test_number_format(liquid_env):
-    assert liquid_env.from_string("[[ '7.6e9' | decimal]]").render() == "7,600,000,000"
-    assert liquid_env.from_string("[[ '7.6e9' | unit: 'hertz']]").render() == "7,600,000,000 Hz"
+    assert liquid_env.from_string("{[ '7.6e9' | decimal ]}").render() == "7,600,000,000"
+    assert liquid_env.from_string("{[ '7.6e9' | unit: 'hertz' ]}").render() == "7,600,000,000 Hz"
 
 def test_templating(liquid_env):
-    assert liquid_env.from_string("[[ '7.6e9' | decimal]]").render() == "7,600,000,000"
-    assert liquid_env.from_string("[[ '7.6e9' | unit: 'hertz']]").render() == "7,600,000,000 Hz"
-    assert liquid_env.from_string("[[ '1' | unit: 'ampere']]").render() == "1 A"
+    assert liquid_env.from_string("{[ '7.6e9' | decimal ]}").render() == "7,600,000,000"
+    assert liquid_env.from_string("{[ '7.6e9' | unit: 'hertz' ]}").render() == "7,600,000,000 Hz"
+    assert liquid_env.from_string("{[ '1' | unit: 'ampere' ]}").render() == "1 A"
 
 @pytest.fixture
 def liquid_with_templates(liquid_env):
@@ -52,15 +52,17 @@ def liquid_with_templates(liquid_env):
     return liquid_env
 
 TEST_TEMPLATE = """
-[% extends "doc_base.txt.liquid" %]
-[% block content %]
+{% extends "doc_base.txt.liquid" %}
+{% block content %}
 This is a test!
-[% endblock%]
+{% endblock %}
 """
 
 EXPECTATION = r"""
 ======   Measurement UUID ======
 None with DNE by Me in run The Last One
+
+File: [[qviewkit://UUID|UUID]]
 
 QKIT-Version: Not relevant
 

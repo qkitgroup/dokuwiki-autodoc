@@ -34,27 +34,15 @@ This will
 For safety reasons, the table page is only amended. This means, that only the last table of the page can be extended. Therefore, it may be warranted to include multiple sub-pages on a sample page. This can be done with the [Include Plugin](https://www.dokuwiki.org/plugin:include).
 
 ## Templates
-Templates for your reports are defined using the Liquid templating language. As DokuWiki uses curly braces for links, Liquid is configured to use square brackets insted. An Example may look like
+Templates for your reports are defined using the Liquid templating language. As DokuWiki uses curly braces for images and square brackets for links, Liquid is configured to use '{[' and ']}' (respectively '{%' '%}') instead. An Example may look like
 ```
-====== Measurement [[measurement.uuid]] ======
-User: [[measurement.user]]
-
-Run: [[measurement.run_id]]
-
-Type: [[measurement.measurement_type]] with [[measurement.measurement_func]]
-
-QKIT-Version: [[measurement.git_commit_id]]
-
-===== Settings =====
-IVD: PLC [[settings.IVD.plc]]
-
-===== Images =====
-[% for image in images %]
-{{[[image]]}}
-[% endfor %]
+{% extends "doc_base.txt.liquid" %}
+{% block title %} My Title {% endblock %}
+{% block content %}
+More content
+{% endblock%}
 ```
-which takes data from your measurement and its settings to fill out the page.
-
+which takes data from your `qkit` measurement and its settings to fill out the page, using the `doc_base.txt.liquid` template.
 ## Installation
 
 ```console
