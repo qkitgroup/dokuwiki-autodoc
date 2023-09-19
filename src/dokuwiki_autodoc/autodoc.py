@@ -9,7 +9,7 @@ from dokuwiki_autodoc.liquid_filters import dict2doku
 from liquid_babel.filters import Unit, Number
 from liquid.extra import add_inheritance_tags
 from liquid.loaders import DictLoader, CachingFileSystemLoader
-from importlib.resources import files
+from importlib_resources import files # TODO: Migrate to importlib.resources if python_required >= 3.9
 
 class AutoDocumentation():
     """
@@ -29,8 +29,7 @@ class AutoDocumentation():
         if use_certifi:
             import certifi
             import ssl
-            context = ssl.create_default_context()
-            context.load_verify_locations(cafile=certifi.where())
+            context = ssl.create_default_context(cafile=certifi.where())
             self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True, context=context)
         else:
             self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)

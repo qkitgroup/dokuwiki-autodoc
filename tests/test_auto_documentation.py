@@ -43,6 +43,11 @@ def autodoc(mocker, monkeypatch) -> AutoDocumentation:
     mocker.patch.object(doc.wiki.medias, "add") # Medias can be created as well
     return doc
 
+def test_certifi_path(mocker, monkeypatch):
+    mocker.patch("dokuwiki.DokuWiki.send")
+    monkeypatch.setattr('builtins.input', lambda prompt: USERNAME)
+    monkeypatch.setattr('getpass.getpass', lambda prompt: PASSWD)
+    doc = AutoDocumentation("https://host", use_certifi=True)
 
 def test_report_generation(autodoc):
     data = {'sample_name': "Test Sample", 'condition': "good", 'result': "Fine"}
