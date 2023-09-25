@@ -34,6 +34,9 @@ dependencies = [
   "importlib-resources"
 ]
 
+[project.scripts]
+qviewkit-url = "dokuwiki_autodoc.qviewkit_url_handler:url_handler"
+
 [project.optional-dependencies]
 certifi = ["certifi"]
 
