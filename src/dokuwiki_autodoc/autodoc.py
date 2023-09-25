@@ -119,6 +119,7 @@ class AutoDocumentation():
 
     def with_templates(self, template_directory=None):
         AutoDocumentation.load_templates(self._liquid_environment, template_directory)
+        return self
 
     @staticmethod
     def format_link(target: str, text: str = None) -> str:
