@@ -1,0 +1,167 @@
+
+======  My Title  Measurement S0Z69N ======
+spectroscopy with measure_1D by Thilo in run EDEL_22
+
+File: [[qviewkit://S0Z69N|S0Z69N]]
+
+QKIT-Version: 5032aaeb9a49c433e4a336500ce22dcf4ab20706
+
+
+More content
+
+
+
+
+===== Images =====
+
+{{sample:test:qkit:S0Z69N:S0Z69N_analysis0_circ_pha_gen.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_amplitude.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_phase.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_views_circ_pha.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_imag_ts.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_views_circ_amp.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_real.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_real_ts.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_imag.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_analysis0_circ_real_gen.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_views_circ_IQ.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_analysis0_circ_imag_gen.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_analysis0_data_real_gen.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_amplitude_ts.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_analysis0_circ_amp_gen.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_analysis0_data_imag_gen.png}}
+
+{{sample:test:qkit:S0Z69N:S0Z69N_data0_phase_ts.png}}
+
+
+
+
+===== Settings =====
+
+==== IVD ====
+  * bias_delay: [{\'auto\': True, \'gain\': 1.0, \'offset\': 0.0, \'status\': True}]
+  * bias_mode: [0]
+  * bias_range: [1e-06]
+  * bias_trigger: [\'aint\']
+  * bias_value: [0.0]
+  * measurement_mode: [0]
+  * plc: 50
+  * sense_delay: [{\'auto\': True, \'gain\': 1.0, \'offset\': 0.0, \'status\': True}]
+  * sense_mode: [0]
+  * sense_nplc: [0.1]
+  * sense_range: [0.0001]
+  * sense_trigger: [\'aint\']
+  * status: [False]
+
+==== mw_src ====
+  * frequency: 20000000000.0
+  * power: -40.0
+  * power_offset: -20
+  * status: False
+
+==== switch ====
+
+==== tip ====
+  * 45k_active: True
+  * 45k_interval: 120.0
+  * 45k_temperature: 44.94136043784207
+  * 4k_active: True
+  * 4k_interval: 120.0
+  * 4k_temperature: 3.0140458021241354
+  * D: 0.0
+  * I: 0.1
+  * P: 0.1
+  * mxc_active: True
+  * mxc_interval: 40.0
+  * mxc_temperature: 0.03842590429166526
+  * still_active: True
+  * still_interval: 120.0
+  * still_temperature: 0.8792015208184195
+  * thermostage_active: False
+  * thermostage_interval: 90.0
+  * thermostage_temperature: Error: parameter not recognized! temperature
+
+==== vna ====
+  * Average: True
+  * active_trace: 1
+  * averages: 1
+  * bandwidth: 50.0
+  * centerfreq: 3529439123.11
+  * channel_index: 1
+  * count: 1
+  * cw: False
+  * cwfreq: None
+  * edel_status: True
+  * measurement_parameter: "S21"
+  * nop: 301
+  * port1_edel: 6.0137e-08
+  * port2_edel: 0.0
+  * power: -45.0
+  * power_offset: -20
+  * span: 500000.0
+  * startfreq: 3529189123.11
+  * startpower: -10.0
+  * stopfreq: 3529689123.11
+  * stoppower: 0.0
+  * sweep_mode: CONT
+  * sweep_type: LIN
+  * sweeptime: 5.779501
+  * sweeptime_averages: 5.779501
+  * trigger_source: IMM
+
+
+
+
+===== Measurement =====
+  * analyzed: False
+  * git_commit_id: 5032aaeb9a49c433e4a336500ce22dcf4ab20706
+  * hdf_relpath: EDEL_22\\Thilo\\S0Z69N_VNA_tracedata\\S0Z69N_VNA_tracedata.h5
+  * measurement_func: measure_1D
+  * measurement_type: spectroscopy
+  * rating: 3
+  * run_id: EDEL_22
+  * user: Thilo
+  * uuid: S0Z69N
+  * web_visible: True
+  * x_axis: frequency
+  * y_axis: 
+  * z_axis: 
+
+==== instruments ====
+
+=== IVD ===
+
+=== mw_src ===
+  * frequency: 20000000000.0 (setter: True)  * power: -40.0 (setter: True)  * status: False (setter: True)
+=== switch ===
+
+=== tip ===
+  * 45k_active: True (setter: True)  * 45k_interval: 120.0 (setter: True)  * 45k_temperature: 44.94136043784207 (setter: False)  * 4k_active: True (setter: True)  * 4k_interval: 120.0 (setter: True)  * 4k_temperature: 3.0140458021241354 (setter: False)  * D: 0.0 (setter: True)  * I: 0.1 (setter: True)  * P: 0.1 (setter: True)  * mxc_active: True (setter: True)  * mxc_interval: 40.0 (setter: True)  * mxc_temperature: 0.03842590429166526 (setter: False)  * still_active: True (setter: True)  * still_interval: 120.0 (setter: True)  * still_temperature: 0.8792015208184195 (setter: False)  * thermostage_active: False (setter: True)  * thermostage_interval: 90.0 (setter: True)  * thermostage_temperature: Error: parameter not recognized! temperature (setter: False)
+=== vna ===
+  * Average: True (setter: True)  * active_trace: 1 (setter: True)  * averages: 1 (setter: True)  * bandwidth: 50.0 (setter: True)  * centerfreq: 3529439123.11 (setter: True)  * channel_index: 1 (setter: True)  * count: 1 (setter: True)  * cw: False (setter: True)  * cwfreq: None (setter: True)  * edel_status: True (setter: True)  * measurement_parameter: "S21" (setter: True)  * nop: 301 (setter: True)  * port1_edel: 6.0137e-08 (setter: True)  * port2_edel: 0.0 (setter: True)  * power: -45.0 (setter: True)  * span: 500000.0 (setter: True)  * startfreq: 3529189123.11 (setter: True)  * startpower: -10.0 (setter: True)  * stopfreq: 3529689123.11 (setter: True)  * stoppower: 0.0 (setter: True)  * sweep_mode: CONT (setter: True)  * sweep_type: LIN (setter: True)  * sweeptime: 5.779501 (setter: False)  * sweeptime_averages: 5.779501 (setter: False)  * trigger_source: IMM (setter: True)
+==== sample ====
+  * comment: 
+  * name: GeQCoS_v5_1_C02
+  * temperature: ~15mK
+  * wiki: infrastructure:cryostats:edel:notebooks:run22:meas_geqcosv5_1_c02
+
+
+
+
+-----------
+This documentation has been autogenerated using {{https://github.com/qkitgroup/dokuwiki-autodoc|dokuwiki-autodoc}}.
