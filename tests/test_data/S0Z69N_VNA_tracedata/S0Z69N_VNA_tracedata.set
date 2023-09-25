@@ -1,0 +1,106 @@
+{
+    "IVD": {
+        "bias_delay": [
+            {
+                "auto": true,
+                "gain": 1.0,
+                "offset": 0.0,
+                "status": true
+            }
+        ],
+        "bias_mode": [
+            0
+        ],
+        "bias_range": [
+            1e-06
+        ],
+        "bias_trigger": [
+            "aint"
+        ],
+        "bias_value": [
+            0.0
+        ],
+        "measurement_mode": [
+            0
+        ],
+        "plc": 50,
+        "sense_delay": [
+            {
+                "auto": true,
+                "gain": 1.0,
+                "offset": 0.0,
+                "status": true
+            }
+        ],
+        "sense_mode": [
+            0
+        ],
+        "sense_nplc": [
+            0.1
+        ],
+        "sense_range": [
+            0.0001
+        ],
+        "sense_trigger": [
+            "aint"
+        ],
+        "status": [
+            false
+        ]
+    },
+    "mw_src": {
+        "frequency": 20000000000.0,
+        "power": -40.0,
+        "power_offset": -20,
+        "status": false
+    },
+    "switch": {},
+    "tip": {
+        "45k_active": true,
+        "45k_interval": 120.0,
+        "45k_temperature": 44.94136043784207,
+        "4k_active": true,
+        "4k_interval": 120.0,
+        "4k_temperature": 3.0140458021241354,
+        "D": 0.0,
+        "I": 0.1,
+        "P": 0.1,
+        "mxc_active": true,
+        "mxc_interval": 40.0,
+        "mxc_temperature": 0.03842590429166526,
+        "still_active": true,
+        "still_interval": 120.0,
+        "still_temperature": 0.8792015208184195,
+        "thermostage_active": false,
+        "thermostage_interval": 90.0,
+        "thermostage_temperature": "Error: parameter not recognized! temperature"
+    },
+    "vna": {
+        "Average": true,
+        "active_trace": 1,
+        "averages": 1,
+        "bandwidth": 50.0,
+        "centerfreq": 3529439123.11,
+        "channel_index": 1,
+        "count": 1,
+        "cw": false,
+        "cwfreq": null,
+        "edel_status": true,
+        "measurement_parameter": "\"S21\"",
+        "nop": 301,
+        "port1_edel": 6.0137e-08,
+        "port2_edel": 0.0,
+        "power": -45.0,
+        "power_offset": -20,
+        "span": 500000.0,
+        "startfreq": 3529189123.11,
+        "startpower": -10.0,
+        "stopfreq": 3529689123.11,
+        "stoppower": 0.0,
+        "sweep_mode": "CONT",
+        "sweep_type": "LIN",
+        "sweeptime": 5.779501,
+        "sweeptime_averages": 5.779501,
+        "trigger_source": "IMM"
+    }
+}

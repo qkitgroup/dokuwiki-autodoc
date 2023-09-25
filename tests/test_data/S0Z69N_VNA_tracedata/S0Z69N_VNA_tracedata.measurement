@@ -1,0 +1,215 @@
+{
+    "analyzed": false,
+    "git_commit_id": "5032aaeb9a49c433e4a336500ce22dcf4ab20706",
+    "hdf_relpath": "EDEL_22\\Thilo\\S0Z69N_VNA_tracedata\\S0Z69N_VNA_tracedata.h5",
+    "instruments": {
+        "IVD": {},
+        "mw_src": {
+            "frequency": {
+                "content": 20000000000.0,
+                "has_setter": true
+            },
+            "power": {
+                "content": -40.0,
+                "has_setter": true
+            },
+            "status": {
+                "content": false,
+                "has_setter": true
+            }
+        },
+        "switch": {},
+        "tip": {
+            "45k_active": {
+                "content": true,
+                "has_setter": true
+            },
+            "45k_interval": {
+                "content": 120.0,
+                "has_setter": true
+            },
+            "45k_temperature": {
+                "content": 44.94136043784207,
+                "has_setter": false
+            },
+            "4k_active": {
+                "content": true,
+                "has_setter": true
+            },
+            "4k_interval": {
+                "content": 120.0,
+                "has_setter": true
+            },
+            "4k_temperature": {
+                "content": 3.0140458021241354,
+                "has_setter": false
+            },
+            "D": {
+                "content": 0.0,
+                "has_setter": true
+            },
+            "I": {
+                "content": 0.1,
+                "has_setter": true
+            },
+            "P": {
+                "content": 0.1,
+                "has_setter": true
+            },
+            "mxc_active": {
+                "content": true,
+                "has_setter": true
+            },
+            "mxc_interval": {
+                "content": 40.0,
+                "has_setter": true
+            },
+            "mxc_temperature": {
+                "content": 0.03842590429166526,
+                "has_setter": false
+            },
+            "still_active": {
+                "content": true,
+                "has_setter": true
+            },
+            "still_interval": {
+                "content": 120.0,
+                "has_setter": true
+            },
+            "still_temperature": {
+                "content": 0.8792015208184195,
+                "has_setter": false
+            },
+            "thermostage_active": {
+                "content": false,
+                "has_setter": true
+            },
+            "thermostage_interval": {
+                "content": 90.0,
+                "has_setter": true
+            },
+            "thermostage_temperature": {
+                "content": "Error: parameter not recognized! temperature",
+                "has_setter": false
+            }
+        },
+        "vna": {
+            "Average": {
+                "content": true,
+                "has_setter": true
+            },
+            "active_trace": {
+                "content": 1,
+                "has_setter": true
+            },
+            "averages": {
+                "content": 1,
+                "has_setter": true
+            },
+            "bandwidth": {
+                "content": 50.0,
+                "has_setter": true
+            },
+            "centerfreq": {
+                "content": 3529439123.11,
+                "has_setter": true
+            },
+            "channel_index": {
+                "content": 1,
+                "has_setter": true
+            },
+            "count": {
+                "content": 1,
+                "has_setter": true
+            },
+            "cw": {
+                "content": false,
+                "has_setter": true
+            },
+            "cwfreq": {
+                "content": null,
+                "has_setter": true
+            },
+            "edel_status": {
+                "content": true,
+                "has_setter": true
+            },
+            "measurement_parameter": {
+                "content": "\"S21\"",
+                "has_setter": true
+            },
+            "nop": {
+                "content": 301,
+                "has_setter": true
+            },
+            "port1_edel": {
+                "content": 6.0137e-08,
+                "has_setter": true
+            },
+            "port2_edel": {
+                "content": 0.0,
+                "has_setter": true
+            },
+            "power": {
+                "content": -45.0,
+                "has_setter": true
+            },
+            "span": {
+                "content": 500000.0,
+                "has_setter": true
+            },
+            "startfreq": {
+                "content": 3529189123.11,
+                "has_setter": true
+            },
+            "startpower": {
+                "content": -10.0,
+                "has_setter": true
+            },
+            "stopfreq": {
+                "content": 3529689123.11,
+                "has_setter": true
+            },
+            "stoppower": {
+                "content": 0.0,
+                "has_setter": true
+            },
+            "sweep_mode": {
+                "content": "CONT",
+                "has_setter": true
+            },
+            "sweep_type": {
+                "content": "LIN",
+                "has_setter": true
+            },
+            "sweeptime": {
+                "content": 5.779501,
+                "has_setter": false
+            },
+            "sweeptime_averages": {
+                "content": 5.779501,
+                "has_setter": false
+            },
+            "trigger_source": {
+                "content": "IMM",
+                "has_setter": true
+            }
+        }
+    },
+    "measurement_func": "measure_1D",
+    "measurement_type": "spectroscopy",
+    "rating": 3,
+    "run_id": "EDEL_22",
+    "sample": {
+        "comment": "",
+        "name": "GeQCoS_v5_1_C02",
+        "temperature": "~15mK",
+        "wiki": "infrastructure:cryostats:edel:notebooks:run22:meas_geqcosv5_1_c02"
+    },
+    "user": "Thilo",
+    "uuid": "S0Z69N",
+    "web_visible": true,
+    "x_axis": "frequency",
+    "y_axis": "",
+    "z_axis": ""
+}
