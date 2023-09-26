@@ -10,6 +10,7 @@ from liquid_babel.filters import Unit, Number
 from liquid.extra import add_inheritance_tags
 from liquid.loaders import DictLoader, CachingFileSystemLoader
 from importlib_resources import files # TODO: Migrate to importlib.resources if python_required >= 3.9
+import numpy as np
 
 class AutoDocumentation():
     """
@@ -200,10 +201,30 @@ class QkitDocumentationBuilder():
         self._report_id = AutoDocumentation.join_path([self.overview_page, self.UUID])
         self._h5path = qkit.fid.get(self.UUID)
         self._h5data = Data(self._h5path)
+        
+        # Load Metadata into context
         self._data.measurement = json.loads(self._h5data.data.measurement[:][0])
         self._data.settings = json.loads(self._h5data.data.settings[:][0])
+        
+        # Try loading analysis data
+        analysis = self._gather_analysis()
+        if analysis:
+            self._data.analysis = analysis
 
         return self
+    
+    def _gather_analysis(self):
+        analysis_context = {}
+        analysis = self._h5data.analysis
+        if not analysis:
+            return None # No analysis available
+        for key in analysis.__dict__.keys():
+            data = analysis.__dict__[key][:]
+            if len(data) == 0:
+                continue
+            if np.size(data) == 1: # Just a single value
+                analysis_context[key] = np.asarray(data).flatten()[0] # Get first item
+        return analysis_context
 
     def upload_images(self):
         """

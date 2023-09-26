@@ -11,6 +11,35 @@ More content
 
 
 
+===== Analysis =====
+  * circ_a: 0.07662788550023905
+  * circ_absqc_err: 481.07587297746574
+  * circ_alpha: -2.18756674973006
+  * circ_chi_square: 2.7010908818879216e-05
+  * circ_delay: -4.308703128567765e-10
+  * circ_delay_remaining: -7.770366188941836e-09
+  * circ_fano_b: 0.21629042127875836
+  * circ_fr: 3529466002.951646
+  * circ_fr_err: 43.2586950711815
+  * circ_phi: -0.21932164040261481
+  * circ_phi_err: 0.0021481849131697105
+  * circ_qc: 242690.89177078754
+  * circ_qc_max: nan
+  * circ_qc_min: nan
+  * circ_qc_no_dia_corr: 236877.29527114777
+  * circ_qi: 227498.9432371069
+  * circ_qi_err: 1057.9473513647656
+  * circ_qi_max: nan
+  * circ_qi_min: nan
+  * circ_qi_no_dia_corr: 232856.10783663738
+  * circ_qi_no_dia_corr_err: 1100.7538187382027
+  * circ_ql: 117424.74485905943
+  * circ_ql_err: 345.2183015402226
+  * circ_theta: 0.7347042634571181
+
+
+
+
 
 ===== Images =====
 
