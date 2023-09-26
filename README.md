@@ -12,9 +12,9 @@ This package is intended to be run in a [Jupyter Lab](https://jupyter.org/) envi
 ## Usage
 To establish a connection to your wiki, run
 ```python
-doc = AutoDocumentation("https://your.wiki/")
+doc = AutoDocumentation("https://your.wiki/").with_templates()
 ```
-This will prompt you for your username and password.
+This will prompt you for your username and password. The call to `with_templates()` is optional, but it loads the default template.
 
 Next, to generate a report from a measurement in qkit, run the following directly after your measurement:
 ```python
@@ -52,9 +52,19 @@ pip install dokuwiki-autodoc
 Do note, that this project depends on qkit, but as qkit is not yet on PyPi, you will need to install it manually.
 
 ## Testing
-Run a temporary dokuwiki instance on your local machine at `http://localhost`. Change the password and username in the mocked `sys.stdin`.
+You will need to have qkit installed to test its integration. This not yet done automatically, as qkit is not yet available on PyPi.
 
-In order to test qkit interoperability, you will need to change the `SAMPLE` to one in your data directory.
+## Certificate Issues
+You may get an SSL Exception when connecting to your server, mentioning self-signed certificates, even though your server may have valid certificates. This has been reported when using Windows.
+
+The reason behind this is, that python uses the system trust store, which, for example, does not include the `T-TeleSec GlobalRoot Class 2` certificate. You may need to install them manually.
+
+To do this, use you browser to download the certificates of your wiki. In Firefox, browse to your wiki, click the lock icon in the nav bar > secure connection > further information. Click `View Certificates`. Navigate to the left-most certificate. This is your Root-CA. There, go to the link to save the certificate as a PEM-File.
+
+Now, run the following command as an administrator:
+```console
+certutil –addstore –f "Root" <pathtocertificatefile>
+```
 
 ## License
 `dokuwiki-autodoc` is distributed under the terms of the [GPLv2](LICENSE.txt) license.
