@@ -3,9 +3,6 @@ from time import time
 import pytest
 import os
 
-USERNAME = "user"
-PASSWD = "password"
-
 TEMPLATE_TEXT_ONLY = r"""
 ====== {[ sample_name ]} ======
 
@@ -31,8 +28,8 @@ def autodoc(mocker, monkeypatch) -> AutoDocumentation:
     """
     # Step 1: Mock DokuWiki API to prevent outbound calls
     mocker.patch("dokuwiki.DokuWiki.send")
-    monkeypatch.setattr('builtins.input', lambda prompt: USERNAME)
-    monkeypatch.setattr('getpass.getpass', lambda prompt: PASSWD)
+    monkeypatch.setattr('builtins.input', lambda prompt: "username")
+    monkeypatch.setattr('getpass.getpass', lambda prompt: "password")
     doc = AutoDocumentation("https://host").with_templates()
 
     # Step 2: Patch all calls.
@@ -46,8 +43,8 @@ def autodoc(mocker, monkeypatch) -> AutoDocumentation:
 
 def test_certifi_path(mocker, monkeypatch):
     mocker.patch("dokuwiki.DokuWiki.send")
-    monkeypatch.setattr('builtins.input', lambda prompt: USERNAME)
-    monkeypatch.setattr('getpass.getpass', lambda prompt: PASSWD)
+    monkeypatch.setattr('builtins.input', lambda prompt: "username")
+    monkeypatch.setattr('getpass.getpass', lambda prompt: "password")
     doc = AutoDocumentation("https://host", use_certifi=True)
 
 def test_report_generation(autodoc):
