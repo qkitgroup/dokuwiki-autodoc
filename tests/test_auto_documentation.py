@@ -107,11 +107,10 @@ def test_qkit_measurement_documentation(autodoc, qkit_fix):
     with QkitDocumentationBuilder(autodoc, 'sample:test:qkit', 'RZDWVZ') as builder:
         builder.upload_images()
         builder.generate_report(QKIT_TEMPLATE)
-        builder.generate_table_entry(["Type", "Comment"], lambda data: [
-            data.measurement['measurement_type'], 
-            "Look! A comment!"
-        ])
-    print()
+        with builder.table_builder() as tb:
+            tb.add_column("Type", lambda data: data.measurement['measurement_type'])
+            tb.add_column("Comment", lambda _: "Look! A comment!")
+
     autodoc.wiki.pages.set.assert_called_once()  # This function must have been called exactly once
     call_args = autodoc.wiki.pages.set.call_args.args
     call_kwargs = autodoc.wiki.pages.set.call_args.kwargs
@@ -124,10 +123,10 @@ def test_qkit_measurement_without_uuid(autodoc, qkit_fix):
     with QkitDocumentationBuilder(autodoc, 'sample:test:qkit') as builder:
         builder.upload_images()
         builder.generate_report(QKIT_TEMPLATE)
-        builder.generate_table_entry(["Type", "Comment"], lambda data: [
-            data.measurement['measurement_type'], 
-            "Look! A comment!"
-        ])
+        with builder.table_builder() as tb:
+            tb.add_column("Type", lambda data: data.measurement['measurement_type'])
+            tb.add_column("Comment", lambda _: "Look! A comment!")
+
     autodoc.wiki.pages.set.assert_called_once() # This function must have been called exactly once
     call_args = autodoc.wiki.pages.set.call_args.args
     call_kwargs = autodoc.wiki.pages.set.call_args.kwargs
@@ -140,10 +139,10 @@ def test_qkit_properties(autodoc, qkit_fix):
     with QkitDocumentationBuilder(autodoc, 'sample:test:qkit', UUID='S0Z69N') as builder:
         builder.upload_images()
         builder.generate_report(QKIT_TEMPLATE)
-        builder.generate_table_entry(["Type", "Comment"], lambda data: [
-            data.measurement['measurement_type'], 
-            "Look! A comment!"
-        ])
+        with builder.table_builder() as tb:
+            tb.add_column("Type", lambda data: data.measurement['measurement_type'])
+            tb.add_column("Comment", lambda _: "Look! A comment!")
+
     autodoc.wiki.pages.set.assert_called_once() # This function must have been called exactly once
     call_args = autodoc.wiki.pages.set.call_args.args
     call_kwargs = autodoc.wiki.pages.set.call_args.kwargs

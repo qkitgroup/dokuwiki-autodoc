@@ -270,17 +270,41 @@ class QkitDocumentationBuilder:
         all_data.__dict__.update(context)
         return all_data.__dict__
 
-    def generate_table_entry(self, columns: List[str], generator: Callable[[any], List], **context):
+    class _TableBuilder:
+
+        def __init__(self, autodoc, overview_page, context):
+            self._columns = []
+            self._content = []
+            self._autodoc = autodoc
+            self._context = context
+            self._overview_page = overview_page
+
+        def __enter__(self):
+            return self
+
+        def add_column(self, title: str, content: Callable):
+            self._columns.append(title)
+            self._content.append(str(content(self._context)))
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            if exc_type is None and exc_val is None and exc_tb is None:
+                # Successfully executed -> Upload
+                self._autodoc.append_table(self._overview_page, self._columns, self._content)
+            else:
+                raise exc_val
+
+    def table_builder(self, **context) -> _TableBuilder:
         """
         Generates a table with the columns UUID, date, and additional columns based on the users choice.
         """
         all_data = copy.copy(self._data)
         all_data.__dict__.update(context)
+
         import qkit
-        full_columns = ['UUID', 'Date'] + columns
-        full_row = [AutoDocumentation.format_link(self._report_id, self.UUID), qkit.fid.get_date(self.UUID)] + list(
-            map(lambda it: str(it), generator(all_data)))
-        self.autodoc.append_table(self.overview_page, full_columns, full_row)
+        builder = QkitDocumentationBuilder._TableBuilder(self.autodoc, self.overview_page, context=all_data)
+        builder.add_column("UUID", lambda _: AutoDocumentation.format_link(self._report_id, self.UUID))
+        builder.add_column("Date", lambda _: qkit.fid.get_date(self.UUID))
+        return builder
 
     def __exit__(self, *args):
         self._h5data.close()
