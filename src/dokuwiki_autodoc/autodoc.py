@@ -9,31 +9,37 @@ from dokuwiki_autodoc.liquid_filters import dict2doku
 from liquid_babel.filters import Unit, Number
 from liquid.extra import add_inheritance_tags
 from liquid.loaders import DictLoader, CachingFileSystemLoader
-from importlib_resources import files # TODO: Migrate to importlib.resources if python_required >= 3.9
+from importlib_resources import files  # TODO: Migrate to importlib.resources if python_required >= 3.9
 import numpy as np
+from .liquid_filters import BABEL_NUMBER_OPTIONS
 
-class AutoDocumentation():
+
+class AutoDocumentation:
     """
     This class provides an interface to a dokuwiki instance.
-    It is a very limited adaptation to Jupyter Notebooks to allow APPEND ONLY documentation.
+    It is a very limited adaptation to Jupyter Notebooks to allow APPEND-ONLY documentation.
     This is to prevent data loss.
     """
 
-    def __init__(self, server, use_certifi=False):
+    def __init__(self, server, use_certifi=False, allow_invalid_certs=False):
         """
         Create a connection to the wiki on the server.
-        Interactively querries the username and password.
+        Interactively queries the username and password.
         If required, certifi can be used as a trust store.
         """
         username = input("Wiki user: ")
         password = getpass.getpass("Wiki password: ")
-        if use_certifi:
-            import certifi
+
+        if allow_invalid_certs:
+            logging.warning("INVALID CERTIFICATES ARE ALLOWED! DO NOT USE IN PRODUCTION!")
             import ssl
-            context = ssl.create_default_context(cafile=certifi.where())
-            self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True, context=context)
-        else:
-            self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)
+            ssl.create_default_context = ssl._create_unverified_context
+        elif use_certifi:
+            import certifi
+            import os
+            os.environ['SSL_CERT_FILE'] = certifi.where()
+
+        self.wiki = dokuwiki.DokuWiki(server, username, password, cookieAuth=True)
         logging.info(f"Connected to Wiki: {self.wiki.title}")
 
         self._liquid_environment = AutoDocumentation.build_default_liquid()
@@ -46,28 +52,29 @@ class AutoDocumentation():
         Then, a row of data will be appended.
 
         Note: This may not work, if the table head contains links. To determine compatibility,
-        the amount of column seperators ('|' and '^') are counted. The problem is, that links may contain '|'
+        the amount of column separators ('|' and '^') are counted. The problem is, that links may contain '|'
         to indicate the display text, which breaks this system. Other rows may contain links, however.
         """
-        assert len(columns) == len(data), f"The table must have the same amount of columns for its head ({len(columns)}) and data ({len(data)})"
-        
+        assert len(columns) == len(
+            data), f"The table must have the same amount of columns for its head ({len(columns)}) and data ({len(data)})"
+
         # Create table lines
-        data = list(map(lambda entry: str(entry), data)) # Make all the data strings
+        data = list(map(lambda entry: str(entry), data))  # Make all the data strings
         table_head = '^ ' + ' ^ '.join(columns) + ' ^\n'
         data_row = '| ' + ' | '.join(data) + ' |\n'
-        
+
         # Step 1: Get page content or initialize it empty
-        page_content = "" # This is done, so that the logic can remain the same without edge cases.
+        page_content = ""  # This is done, so that the logic can remain the same without edge cases.
         try:
             page_content = self.wiki.pages.get(page)
-        except(dokuwiki.DokuWikiError):
+        except dokuwiki.DokuWikiError:
             # Page probably doesn't exist, so initialize it empty
             self.wiki.pages.set(page, "")
-        
+
         to_be_appended = ""
-        if not page_content.endswith(("\n", "\r\n")): # Ensure we start in a new line
+        if not page_content.endswith(("\n", "\r\n")):  # Ensure we start in a new line
             to_be_appended += "\n"
-        
+
         # Step 2: Check if page content ends with a table
         lines = list(map(lambda it: it.strip(), page_content.strip().splitlines()))
         # Find the last table heading. Walk backwards from the last line.
@@ -78,13 +85,14 @@ class AutoDocumentation():
                 # Still in the table
                 head_candidate = line
             else:
-                break # No longer in the table, the previous line was the table head
+                break  # No longer in the table, the previous line was the table head
 
         if head_candidate:
             # It is a table line, count columns
             column_count = head_candidate.count('|') + head_candidate.count('^') - 1
 
-            if column_count == len(columns): # TODO: We have identified the head_candidate, should we enforce an exact match?
+            if column_count == len(columns):
+                # TODO: We have identified the head_candidate, should we enforce an exact match?
                 # There is a table matching our column count, append data
                 to_be_appended += data_row
             else:
@@ -93,10 +101,9 @@ class AutoDocumentation():
         else:
             # There is no table, create a new table, same as above
             to_be_appended += "\n" + table_head + data_row
-        
+
         # Lastly, we append the data
         self.wiki.pages.append(page, to_be_appended, minor=True)
-
 
     def upload_image(self, id: str, content: Union[str, bytes, PathLike]):
         """
@@ -106,14 +113,28 @@ class AutoDocumentation():
         """
         self.wiki.medias.add(id, content, overwrite=False)
 
-    def generate_report(self, page: str, data: dict, template_str: str):
+    def generate_report_from_template(self, page: str, data: dict, template_name: str):
         """
-        Generate a report based on `template`, fill it with `content` and upload it under the name `page`.
+        Generate a report based on a template with the name `template`, fill it with `content` and upload it under the name 
+        `page`.
+
+        Uses the liquid templating language, but instead of curly braces, it uses square brackets, because dokuwiki
+        already uses curly braces.
+        """
+        template = self._liquid_environment.get_template(template_name)
+        self._generate_and_upload_template(page, data, template)
+
+    def generate_report_from_template_string(self, page: str, data: dict, template_str: str):
+        """
+        Generate a report based on `template_str`, fill it with `content` and upload it under the name `page`.
 
         Uses the liquid templating language, but instead of curly braces, it uses square brackets, because dokuwiki
         already uses curly braces.
         """
         template = self._liquid_environment.from_string(template_str)
+        self._generate_and_upload_template(page, data, template)
+
+    def _generate_and_upload_template(self, page: str, data: dict, template: liquid.BoundTemplate):
         report = template.render(**data)
         assert not self.wiki.pages.get(page), "Page already exists!"
         self.wiki.pages.set(page, report, sum="Automatic Report Generation.")
@@ -132,21 +153,21 @@ class AutoDocumentation():
             return f"[[{target}]]"
         else:
             return f"[[{target}|{text}]]"
-        
+
     @staticmethod
     def join_path(iterable: Iterable) -> str:
         return ":".join(iterable)
-    
+
     @staticmethod
     def build_default_liquid() -> liquid.Environment:
-        env = liquid.Environment(tag_start_string="{%", tag_end_string="%}", 
-                                   statement_start_string="{[", statement_end_string="]}")
+        env = liquid.Environment(tag_start_string="{%", tag_end_string="%}",
+                                 statement_start_string="{[", statement_end_string="]}")
         env.add_filter("dict2doku", dict2doku)
-        env.add_filter("decimal", Number())
+        env.add_filter("decimal", Number(**BABEL_NUMBER_OPTIONS))
         env.add_filter("unit", Unit(default_length='short'))
         add_inheritance_tags(env)
         return env
-    
+
     @staticmethod
     def load_templates(environment, path=None):
         """
@@ -155,19 +176,19 @@ class AutoDocumentation():
         """
         if path == None:
             package = files("dokuwiki_autodoc.templates")
-            templates = {resource.name : package.joinpath(resource.name).read_text()
-                          for resource in package.iterdir() if resource.is_file() and resource.name.endswith(".liquid") }
+            templates = {resource.name: package.joinpath(resource.name).read_text()
+                         for resource in package.iterdir() if resource.is_file() and resource.name.endswith(".liquid")}
             environment.loader = DictLoader(templates)
         else:
             environment.loader = CachingFileSystemLoader(path)
+
 
 class _Object(object):
     def __getitem__(self, key: str) -> Any:
         return self.__dict__[key]
 
-class QkitDocumentationBuilder():
 
-    
+class QkitDocumentationBuilder:
 
     def __init__(self, autodoc: AutoDocumentation, overview_page: str, UUID: str = None):
         """
@@ -184,9 +205,8 @@ class QkitDocumentationBuilder():
         assert overview_page, "Overview page must be a non-empty string!"
         self.overview_page = overview_page
         self._image_ids = []
-        self._data = _Object() # Store data available to the Liquid template
-        self._data.overview_page = overview_page 
-        
+        self._data = _Object()  # Store data available to the Liquid template
+        self._data.overview_page = overview_page
 
     def __enter__(self):
         try:
@@ -201,29 +221,29 @@ class QkitDocumentationBuilder():
         self._report_id = AutoDocumentation.join_path([self.overview_page, self.UUID])
         self._h5path = qkit.fid.get(self.UUID)
         self._h5data = Data(self._h5path)
-        
+
         # Load Metadata into context
         self._data.measurement = json.loads(self._h5data.data.measurement[:][0])
         self._data.settings = json.loads(self._h5data.data.settings[:][0])
-        
+
         # Try loading analysis data
         analysis = self._gather_analysis()
         if analysis:
             self._data.analysis = analysis
 
         return self
-    
+
     def _gather_analysis(self):
         analysis_context = {}
         analysis = self._h5data.analysis
         if not analysis:
-            return None # No analysis available
+            return None  # No analysis available
         for key in analysis.__dict__.keys():
             data = analysis.__dict__[key][:]
             if len(data) == 0:
                 continue
-            if np.size(data) == 1: # Just a single value
-                analysis_context[key] = np.asarray(data).flatten()[0] # Get first item
+            if np.size(data) == 1:  # Just a single value
+                analysis_context[key] = np.asarray(data).flatten()[0]  # Get first item
         return analysis_context
 
     def upload_images(self):
@@ -238,12 +258,17 @@ class QkitDocumentationBuilder():
             self._image_ids.append(image_id)
             self.autodoc.upload_image(image_id, absolute_path)
         self._data.images = self._image_ids
-    
+
     def generate_report(self, template, **context):
+        self.autodoc.generate_report_from_template_string(self._report_id, self._update_context(context), template)
+
+    def generate_report_from_template_file(self, template_name, **context):
+        self.autodoc.generate_report_from_template(self._report_id, self._update_context(context), template_name)
+
+    def _update_context(self, context) -> dict:
         all_data = copy.copy(self._data)
         all_data.__dict__.update(context)
-        self.autodoc.generate_report(self._report_id, all_data.__dict__, template)
-
+        return all_data.__dict__
 
     def generate_table_entry(self, columns: List[str], generator: Callable[[any], List], **context):
         """
@@ -253,7 +278,8 @@ class QkitDocumentationBuilder():
         all_data.__dict__.update(context)
         import qkit
         full_columns = ['UUID', 'Date'] + columns
-        full_row = [AutoDocumentation.format_link(self._report_id, self.UUID), qkit.fid.get_date(self.UUID)] + list(map(lambda it: str(it), generator(all_data)))
+        full_row = [AutoDocumentation.format_link(self._report_id, self.UUID), qkit.fid.get_date(self.UUID)] + list(
+            map(lambda it: str(it), generator(all_data)))
         self.autodoc.append_table(self.overview_page, full_columns, full_row)
 
     def __exit__(self, *args):
