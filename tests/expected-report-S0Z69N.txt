@@ -12,30 +12,30 @@ More content
 
 
 ===== Analysis =====
-  * circ_a: 0.07662788550023905
-  * circ_absqc_err: 481.07587297746574
-  * circ_alpha: -2.18756674973006
-  * circ_chi_square: 2.7010908818879216e-05
-  * circ_delay: -4.308703128567765e-10
-  * circ_delay_remaining: -7.770366188941836e-09
-  * circ_fano_b: 0.21629042127875836
-  * circ_fr: 3529466002.951646
-  * circ_fr_err: 43.2586950711815
-  * circ_phi: -0.21932164040261481
-  * circ_phi_err: 0.0021481849131697105
-  * circ_qc: 242690.89177078754
+  * circ_a: 7.66279E-2
+  * circ_absqc_err: 4.81076E+2
+  * circ_alpha: -2.18757E+0
+  * circ_chi_square: 2.70109E-5
+  * circ_delay: -4.3087E-10
+  * circ_delay_remaining: -7.77037E-9
+  * circ_fano_b: 2.1629E-1
+  * circ_fr: 3.52947E+9
+  * circ_fr_err: 4.32587E+1
+  * circ_phi: -2.19322E-1
+  * circ_phi_err: 2.14818E-3
+  * circ_qc: 2.42691E+5
   * circ_qc_max: nan
   * circ_qc_min: nan
-  * circ_qc_no_dia_corr: 236877.29527114777
-  * circ_qi: 227498.9432371069
-  * circ_qi_err: 1057.9473513647656
+  * circ_qc_no_dia_corr: 2.36877E+5
+  * circ_qi: 2.27499E+5
+  * circ_qi_err: 1.05795E+3
   * circ_qi_max: nan
   * circ_qi_min: nan
-  * circ_qi_no_dia_corr: 232856.10783663738
-  * circ_qi_no_dia_corr_err: 1100.7538187382027
-  * circ_ql: 117424.74485905943
-  * circ_ql_err: 345.2183015402226
-  * circ_theta: 0.7347042634571181
+  * circ_qi_no_dia_corr: 2.32856E+5
+  * circ_qi_no_dia_corr_err: 1.10075E+3
+  * circ_ql: 1.17425E+5
+  * circ_ql_err: 3.45218E+2
+  * circ_theta: 7.34704E-1
 
 
 
@@ -89,7 +89,7 @@ More content
   * bias_trigger: ['aint']
   * bias_value: [0.0]
   * measurement_mode: [0]
-  * plc: 50
+  * plc: 5E+1
   * sense_delay: [{'auto': True, 'gain': 1.0, 'offset': 0.0, 'status': True}]
   * sense_mode: [0]
   * sense_nplc: [0.1]
@@ -98,59 +98,59 @@ More content
   * status: [False]
 
 ==== mw_src ====
-  * frequency: 20000000000.0
-  * power: -40.0
-  * power_offset: -20
+  * frequency: 2E+10
+  * power: -4E+1
+  * power_offset: -2E+1
   * status: False
 
 ==== switch ====
 
 ==== tip ====
   * 45k_active: True
-  * 45k_interval: 120.0
-  * 45k_temperature: 44.94136043784207
+  * 45k_interval: 1.2E+2
+  * 45k_temperature: 4.49414E+1
   * 4k_active: True
-  * 4k_interval: 120.0
-  * 4k_temperature: 3.0140458021241354
-  * D: 0.0
-  * I: 0.1
-  * P: 0.1
+  * 4k_interval: 1.2E+2
+  * 4k_temperature: 3.01405E+0
+  * D: 0E+0
+  * I: 1E-1
+  * P: 1E-1
   * mxc_active: True
-  * mxc_interval: 40.0
-  * mxc_temperature: 0.03842590429166526
+  * mxc_interval: 4E+1
+  * mxc_temperature: 3.84259E-2
   * still_active: True
-  * still_interval: 120.0
-  * still_temperature: 0.8792015208184195
+  * still_interval: 1.2E+2
+  * still_temperature: 8.79202E-1
   * thermostage_active: False
-  * thermostage_interval: 90.0
+  * thermostage_interval: 9E+1
   * thermostage_temperature: Error: parameter not recognized! temperature
 
 ==== vna ====
   * Average: True
-  * active_trace: 1
-  * averages: 1
-  * bandwidth: 50.0
-  * centerfreq: 3529439123.11
-  * channel_index: 1
-  * count: 1
+  * active_trace: 1E+0
+  * averages: 1E+0
+  * bandwidth: 5E+1
+  * centerfreq: 3.52944E+9
+  * channel_index: 1E+0
+  * count: 1E+0
   * cw: False
   * cwfreq: None
   * edel_status: True
   * measurement_parameter: "S21"
-  * nop: 301
-  * port1_edel: 6.0137e-08
-  * port2_edel: 0.0
-  * power: -45.0
-  * power_offset: -20
-  * span: 500000.0
-  * startfreq: 3529189123.11
-  * startpower: -10.0
-  * stopfreq: 3529689123.11
-  * stoppower: 0.0
+  * nop: 3.01E+2
+  * port1_edel: 6.0137E-8
+  * port2_edel: 0E+0
+  * power: -4.5E+1
+  * power_offset: -2E+1
+  * span: 5E+5
+  * startfreq: 3.52919E+9
+  * startpower: -1E+1
+  * stopfreq: 3.52969E+9
+  * stoppower: 0E+0
   * sweep_mode: CONT
   * sweep_type: LIN
-  * sweeptime: 5.779501
-  * sweeptime_averages: 5.779501
+  * sweeptime: 5.7795E+0
+  * sweeptime_averages: 5.7795E+0
   * trigger_source: IMM
 
 
@@ -162,7 +162,7 @@ More content
   * hdf_relpath: EDEL_22\Thilo\S0Z69N_VNA_tracedata\S0Z69N_VNA_tracedata.h5
   * measurement_func: measure_1D
   * measurement_type: spectroscopy
-  * rating: 3
+  * rating: 3E+0
   * run_id: EDEL_22
   * user: Thilo
   * uuid: S0Z69N
@@ -176,57 +176,57 @@ More content
 === IVD ===
 
 === mw_src ===
-  * frequency: 20000000000.0 (setter: True)
-  * power: -40.0 (setter: True)
+  * frequency: 2E+10 (setter: True)
+  * power: -4E+1 (setter: True)
   * status: False (setter: True)
 
 === switch ===
 
 === tip ===
   * 45k_active: True (setter: True)
-  * 45k_interval: 120.0 (setter: True)
-  * 45k_temperature: 44.94136043784207 (setter: False)
+  * 45k_interval: 1.2E+2 (setter: True)
+  * 45k_temperature: 4.49414E+1 (setter: False)
   * 4k_active: True (setter: True)
-  * 4k_interval: 120.0 (setter: True)
-  * 4k_temperature: 3.0140458021241354 (setter: False)
-  * D: 0.0 (setter: True)
-  * I: 0.1 (setter: True)
-  * P: 0.1 (setter: True)
+  * 4k_interval: 1.2E+2 (setter: True)
+  * 4k_temperature: 3.01405E+0 (setter: False)
+  * D: 0E+0 (setter: True)
+  * I: 1E-1 (setter: True)
+  * P: 1E-1 (setter: True)
   * mxc_active: True (setter: True)
-  * mxc_interval: 40.0 (setter: True)
-  * mxc_temperature: 0.03842590429166526 (setter: False)
+  * mxc_interval: 4E+1 (setter: True)
+  * mxc_temperature: 3.84259E-2 (setter: False)
   * still_active: True (setter: True)
-  * still_interval: 120.0 (setter: True)
-  * still_temperature: 0.8792015208184195 (setter: False)
+  * still_interval: 1.2E+2 (setter: True)
+  * still_temperature: 8.79202E-1 (setter: False)
   * thermostage_active: False (setter: True)
-  * thermostage_interval: 90.0 (setter: True)
+  * thermostage_interval: 9E+1 (setter: True)
   * thermostage_temperature: Error: parameter not recognized! temperature (setter: False)
 
 === vna ===
   * Average: True (setter: True)
-  * active_trace: 1 (setter: True)
-  * averages: 1 (setter: True)
-  * bandwidth: 50.0 (setter: True)
-  * centerfreq: 3529439123.11 (setter: True)
-  * channel_index: 1 (setter: True)
-  * count: 1 (setter: True)
+  * active_trace: 1E+0 (setter: True)
+  * averages: 1E+0 (setter: True)
+  * bandwidth: 5E+1 (setter: True)
+  * centerfreq: 3.52944E+9 (setter: True)
+  * channel_index: 1E+0 (setter: True)
+  * count: 1E+0 (setter: True)
   * cw: False (setter: True)
   * cwfreq: None (setter: True)
   * edel_status: True (setter: True)
   * measurement_parameter: "S21" (setter: True)
-  * nop: 301 (setter: True)
-  * port1_edel: 6.0137e-08 (setter: True)
-  * port2_edel: 0.0 (setter: True)
-  * power: -45.0 (setter: True)
-  * span: 500000.0 (setter: True)
-  * startfreq: 3529189123.11 (setter: True)
-  * startpower: -10.0 (setter: True)
-  * stopfreq: 3529689123.11 (setter: True)
-  * stoppower: 0.0 (setter: True)
+  * nop: 3.01E+2 (setter: True)
+  * port1_edel: 6.0137E-8 (setter: True)
+  * port2_edel: 0E+0 (setter: True)
+  * power: -4.5E+1 (setter: True)
+  * span: 5E+5 (setter: True)
+  * startfreq: 3.52919E+9 (setter: True)
+  * startpower: -1E+1 (setter: True)
+  * stopfreq: 3.52969E+9 (setter: True)
+  * stoppower: 0E+0 (setter: True)
   * sweep_mode: CONT (setter: True)
   * sweep_type: LIN (setter: True)
-  * sweeptime: 5.779501 (setter: False)
-  * sweeptime_averages: 5.779501 (setter: False)
+  * sweeptime: 5.7795E+0 (setter: False)
+  * sweeptime_averages: 5.7795E+0 (setter: False)
   * trigger_source: IMM (setter: True)
 
 ==== sample ====

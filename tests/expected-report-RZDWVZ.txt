@@ -54,7 +54,7 @@ More content
   * bias_trigger: ['aint', 'aint']
   * bias_value: [0.0, 0.0]
   * measurement_mode: [1, 0]
-  * plc: 50
+  * plc: 5E+1
   * sense_delay: [{'auto': True, 'gain': 1.0, 'offset': 1.5e-05, 'status': True}, {'auto': True, 'gain': 1.0, 'offset': 0.0, 'status': True}]
   * sense_mode: [1, 0]
   * sense_nplc: [1.0, 0.1]
@@ -67,12 +67,12 @@ More content
 
 ===== Measurement =====
   * analyzed: False
-  * average: 1
+  * average: 1E+0
   * git_commit_id: ab3e1e2f0785e3aad761af920cf69238a494f03d
   * hdf_relpath: GEQCOS-V5-W1\Thilo\RZDWVZ_1D_IV_curve\RZDWVZ_1D_IV_curve.h5
   * measurement_func: measure_1D
   * measurement_type: transport
-  * rating: 3
+  * rating: 3E+0
   * run_id: GEQCOS-V5-W1
   * user: Thilo
   * uuid: RZDWVZ
@@ -86,7 +86,7 @@ More content
 === IVD ===
 
 ==== sample ====
-  * average: 1
+  * average: 1E+0
   * comment: Hope for the Best.
   * name: XJJ
   * sweeps: [[0, 5e-05, 2.5e-06, 0], [5e-05, 0, 2.5e-06, 0], [0, -5e-05, 2.5e-06, 0], [-5e-05, 0, 2.5e-06, 0]]

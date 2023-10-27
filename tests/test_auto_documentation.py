@@ -111,9 +111,14 @@ def test_qkit_measurement_documentation(autodoc, qkit_fix):
             data.measurement['measurement_type'], 
             "Look! A comment!"
         ])
-    autodoc.wiki.pages.set.assert_called_once_with('sample:test:qkit:RZDWVZ',
-                                                   open("./tests/expected-report-RZDWVZ.txt").read(),
-                                                   sum='Automatic Report Generation.')
+    print()
+    autodoc.wiki.pages.set.assert_called_once()  # This function must have been called exactly once
+    call_args = autodoc.wiki.pages.set.call_args.args
+    call_kwargs = autodoc.wiki.pages.set.call_args.kwargs
+    assert len(call_args) == 2, "Invalid argument count!"
+    assert call_args[0] == 'sample:test:qkit:RZDWVZ'
+    assert call_args[1] == open("./tests/expected-report-RZDWVZ.txt").read(), f"Found:\n {call_args[1]}"
+    assert call_kwargs['sum'] == 'Automatic Report Generation.'
 
 def test_qkit_measurement_without_uuid(autodoc, qkit_fix):
     with QkitDocumentationBuilder(autodoc, 'sample:test:qkit') as builder:
@@ -128,7 +133,7 @@ def test_qkit_measurement_without_uuid(autodoc, qkit_fix):
     call_kwargs = autodoc.wiki.pages.set.call_args.kwargs
     assert len(call_args) == 2, "Invalid argument count!"
     assert call_args[0] == 'sample:test:qkit:S0Z69N'
-    assert call_args[1] == open("./tests/expected-report-S0Z69N.txt").read()
+    assert call_args[1] == open("./tests/expected-report-S0Z69N.txt").read(), f"Found:\n {call_args[1]}"
     assert call_kwargs['sum'] == 'Automatic Report Generation.' 
     
 def test_qkit_properties(autodoc, qkit_fix):
@@ -144,5 +149,5 @@ def test_qkit_properties(autodoc, qkit_fix):
     call_kwargs = autodoc.wiki.pages.set.call_args.kwargs
     assert len(call_args) == 2, "Invalid argument count!"
     assert call_args[0] == 'sample:test:qkit:S0Z69N'
-    assert call_args[1] == open("./tests/expected-report-S0Z69N.txt").read()
+    assert call_args[1] == open("./tests/expected-report-S0Z69N.txt").read(), f"Found:\n {call_args[1]}"
     assert call_kwargs['sum'] == 'Automatic Report Generation.'
