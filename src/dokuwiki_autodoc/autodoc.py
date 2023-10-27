@@ -271,6 +271,12 @@ class QkitDocumentationBuilder:
         return all_data.__dict__
 
     class _TableBuilder:
+        """
+        The _Table Builder context to track columns and content, in a readable way.
+
+        Enter with a `with` statement, and add columns using `add_column`. Once the exited, the table row
+        will be added.
+        """
 
         def __init__(self, autodoc, overview_page, context):
             self._columns = []
@@ -283,6 +289,11 @@ class QkitDocumentationBuilder:
             return self
 
         def add_column(self, title: str, content: Callable):
+            """
+            Adds a column with `title` and creates the content from the `content` callable.
+
+            This way, all variables available in content generation are also available for table creation.
+            """
             self._columns.append(title)
             self._content.append(str(content(self._context)))
 
@@ -295,7 +306,9 @@ class QkitDocumentationBuilder:
 
     def table_builder(self, **context) -> _TableBuilder:
         """
-        Generates a table with the columns UUID, date, and additional columns based on the users choice.
+        Create a table_builder. Automatically adds the UUID and date of your measurements.
+
+        Use the tb.add_column() funciton in _TableBuilder to add additional columns.
         """
         all_data = copy.copy(self._data)
         all_data.__dict__.update(context)

@@ -21,10 +21,9 @@ Next, to generate a report from a measurement in qkit, run the following directl
 with QkitDocumentationBuilder(doc, 'sample:yoursample') as builder:
         builder.upload_images()
         builder.generate_report(QKIT_TEMPLATE)
-        builder.generate_table_entry(["Type", "Comment"], lambda data: [
-            data['measurement']['measurement_type'], 
-            input("Comment: ")
-        ])
+        with builder.table_builder() as tb:
+            tb.add_column("Type", lambda data: data.measurement['measurement_type'])
+            tb.add_column("Comment", lambda _: "Look! A comment!")
 ```
 This will
 - Upload the plots generated from your measurement by qkit
