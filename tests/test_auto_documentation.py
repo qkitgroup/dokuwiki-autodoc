@@ -49,11 +49,11 @@ def test_certifi_path(mocker, monkeypatch):
 
 def test_report_generation(autodoc):
     data = {'sample_name': "Test Sample", 'condition': "good", 'result': "Fine"}
-    autodoc.generate_report('sample:test:report', data, TEMPLATE_TEXT_ONLY)
+    autodoc.generate_report_from_template_string('sample:test:report', data, TEMPLATE_TEXT_ONLY)
 
 def test_doku_filter(autodoc):
     data = {'all': {'sample_name': "Test Sample", 'condition': {'left': 'good', 'right': 'ok'}, 'result': "Fine"}}
-    autodoc.generate_report('sample:test:report', data, "{[all | dict2doku]}")
+    autodoc.generate_report_from_template_string('sample:test:report', data, "{[all | dict2doku]}")
     autodoc.wiki.pages.get.assert_called_once_with('sample:test:report')
     autodoc.wiki.pages.set.assert_called_once_with('sample:test:report',
                                                    '  * sample_name: Test Sample\n  * result: Fine\n\n==== condition ====\n  * left: good\n  * right: ok\n\n',
@@ -69,7 +69,7 @@ def test_full_report(autodoc):
     autodoc.upload_image(id, 'tests/example.png')
 
     data = {'sample_name': "Test Sample", 'condition': "good", 'result': "Fine", 'image_id': id}
-    autodoc.generate_report('sample:test:image_report', data, TEMPLATE_WITH_IMAGE)
+    autodoc.generate_report_from_template_string('sample:test:image_report', data, TEMPLATE_WITH_IMAGE)
 
 def test_link_formating():
     link = "some:link"
@@ -145,4 +145,4 @@ def test_qkit_properties(autodoc, qkit_fix):
     assert len(call_args) == 2, "Invalid argument count!"
     assert call_args[0] == 'sample:test:qkit:S0Z69N'
     assert call_args[1] == open("./tests/expected-report-S0Z69N.txt").read()
-    assert call_kwargs['sum'] == 'Automatic Report Generation.' 
+    assert call_kwargs['sum'] == 'Automatic Report Generation.'
