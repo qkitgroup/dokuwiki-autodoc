@@ -308,7 +308,7 @@ class QkitDocumentationBuilder:
         """
         Create a table_builder. Automatically adds the UUID and date of your measurements.
 
-        Use the tb.add_column() funciton in _TableBuilder to add additional columns.
+        Use the tb.add_column() function in _TableBuilder to add additional columns.
         """
         all_data = copy.copy(self._data)
         all_data.__dict__.update(context)
