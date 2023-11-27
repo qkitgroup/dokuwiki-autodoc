@@ -1,3 +1,6 @@
+import pathlib
+import re
+
 import dokuwiki
 import getpass
 import logging
@@ -5,6 +8,7 @@ from typing import Any, Callable, Dict, Iterable, List, Union
 from os import PathLike, path, listdir
 import liquid
 import copy
+import inspect
 from dokuwiki_autodoc.liquid_filters import dict2doku
 from liquid_babel.filters import Unit, Number
 from liquid.extra import add_inheritance_tags
@@ -207,6 +211,8 @@ class QkitDocumentationBuilder:
         self._image_ids = []
         self._data = _Object()  # Store data available to the Liquid template
         self._data.overview_page = overview_page
+        self._user_context = {}
+        self._local_context = None
 
     def __enter__(self):
         try:
@@ -218,10 +224,22 @@ class QkitDocumentationBuilder:
         if not self.UUID:
             self.UUID = qkit.fid.get_last()
 
+        self._data_path = qkit.cfg['datadir']
         self._report_id = AutoDocumentation.join_path([self.overview_page, self.UUID])
         self._h5path = qkit.fid.get(self.UUID)
         self._h5data = Data(self._h5path)
 
+        # Load proposed url into context
+        containing_dir = pathlib.Path(self._h5path).parent
+        relpath = path.relpath(containing_dir, start=self._data_path)
+        split_pattern = re.compile(r"[/\\._\- ]")
+        split = set(section.strip() for section in split_pattern.split(str(relpath)) if section.strip())
+        split.add('data')  # Very common.
+        split = list(dict.fromkeys(split))  # Make it an ordered list. Reproducibility.
+        split.sort()
+        hint = ";".join(split)
+        url = f"qviewkit://{self.UUID}?hint={hint}"
+        self._data.url = url
         # Load Metadata into context
         self._data.measurement = json.loads(self._h5data.data.measurement[:][0])
         self._data.settings = json.loads(self._h5data.data.settings[:][0])
@@ -259,15 +277,37 @@ class QkitDocumentationBuilder:
             self.autodoc.upload_image(image_id, absolute_path)
         self._data.images = self._image_ids
 
-    def generate_report(self, template, **context):
-        self.autodoc.generate_report_from_template_string(self._report_id, self._update_context(context), template)
+    def update_context(self, **context):
+        """
+        Provide user context defined from key-word arguments.
+        """
+        self._user_context.update(context)
 
-    def generate_report_from_template_file(self, template_name, **context):
-        self.autodoc.generate_report_from_template(self._report_id, self._update_context(context), template_name)
+    def update_context_with_locals(self):
+        """
+        Use inspection to get the callees local variables for context.
+        """
+        our_frame = inspect.currentframe()
+        local_context = our_frame.f_back.f_locals.copy()  # Who called us and what are their locals?
+        # Filter out private stuff
+        self._local_context = {k: v for k, v in local_context.items() if not k.startswith('_')}
+        del our_frame  # Prevent reference cycles. Garbage collection does not like that.
 
-    def _update_context(self, context) -> dict:
-        all_data = copy.copy(self._data)
-        all_data.__dict__.update(context)
+    def generate_report(self, template):
+        self.autodoc.generate_report_from_template_string(self._report_id, self._collect_context(), template)
+
+    def generate_report_from_template_file(self, template_name):
+        self.autodoc.generate_report_from_template(self._report_id, self._collect_context(), template_name)
+
+    def _collect_context(self) -> dict:
+        all_data = copy.copy(self._data)  # Automatically collected. Lowest priority.
+        if self._local_context is not None:  # May overwrite stuff, but not highest prio.
+            if "locals" in all_data.__dict__:
+                all_data.__dict__["locals"].__dict__.update(self._local_context)
+            else:
+                all_data.__dict__["locals"] = self._local_context
+
+        all_data.__dict__.update(self._user_context)  # The user may overwrite everything.
         return all_data.__dict__
 
     class _TableBuilder:

@@ -2,7 +2,7 @@
 ======  My Title  Measurement S0Z69N ======
 spectroscopy with measure_1D by Thilo in run EDEL_22
 
-File: [[qviewkit://S0Z69N|S0Z69N]]
+File: [[qviewkit://S0Z69N?hint=S0Z69N;VNA;data;tracedata | S0Z69N]]
 
 QKIT-Version: 5032aaeb9a49c433e4a336500ce22dcf4ab20706
 

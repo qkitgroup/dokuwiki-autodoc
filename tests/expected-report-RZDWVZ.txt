@@ -2,7 +2,7 @@
 ======  My Title  Measurement RZDWVZ ======
 transport with measure_1D by Thilo in run GEQCOS-V5-W1
 
-File: [[qviewkit://RZDWVZ|RZDWVZ]]
+File: [[qviewkit://RZDWVZ?hint=1D;IV;RZDWVZ;curve;data | RZDWVZ]]
 
 QKIT-Version: ab3e1e2f0785e3aad761af920cf69238a494f03d
 
