@@ -32,7 +32,8 @@ dependencies = [
   "python-liquid >= 1.10.0",
   "liquid-babel >= 1.0.0",
   "babel",
-  "importlib-resources"
+  "importlib-resources",
+  "parsita"
 ]
 
 [project.scripts]
