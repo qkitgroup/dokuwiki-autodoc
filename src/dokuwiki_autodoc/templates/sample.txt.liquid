@@ -1,0 +1,16 @@
+====== Sample {[sample_name]} ======
+{% block description required %} {% endblock %}
+{% if images %}
+===== Images =====
+{% for image in images %}
+{{{[image]}}}
+{% endfor %}
+{% endif %}
+
+{% if measurements %}
+===== Measurements =====
+{% for m in measurements %}
+==== {[ m[0] ]} ====
+{{page>{[document_path]}:{[m[1]]}}}
+{% endfor %}
+{% endif %}
