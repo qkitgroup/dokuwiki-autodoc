@@ -42,6 +42,15 @@ More content
 {% endblock%}
 ```
 which takes data from your `qkit` measurement and its settings to fill out the page, using the `doc_base.txt.liquid` template.
+
+## URL-Handler
+This program defines a URL-Scheme called `qviewkit`:
+```
+qviewkit://UUID?hint=some;hint
+```
+Here, `UUID` is the measurement you are interested in opening, and after `hint` a semicolon seperated list of strings 
+describes where it may be located, should it not be in the index. The hint is optional.
+
 ## Installation
 
 ```console
