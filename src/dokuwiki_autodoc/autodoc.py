@@ -275,6 +275,17 @@ class QkitDocumentationBuilder:
             image_id = AutoDocumentation.join_path([self._report_id, f])
             self._image_ids.append(image_id)
             self.autodoc.upload_image(image_id, absolute_path)
+        # First, sort the images into alphabetical order
+        self._image_ids.sort()
+
+        # Sort images into a useful order. Previous order is preserved for identical metrics, so that within
+        # each group, alphabetization is preserved.
+        sort_order = {'view': -3, 'data0': -2, 'analysis0': -1}
+
+        def sort_metric(data: str) -> int:
+            return min([value for (key, value) in sort_order.items() if key in data])
+
+        self._image_ids.sort(key=lambda entry: sort_metric(entry.split(':')[-1]))
         self._data.images = self._image_ids
 
     def update_context(self, **context):
