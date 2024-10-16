@@ -13,6 +13,8 @@ import logging
 from parsita import *
 import time
 
+logging.basicConfig(level=logging.DEBUG, format="[%(levelname).1s] %(message)s")
+
 
 class QviewkitURLParser(ParserContext):
     """
@@ -57,7 +59,9 @@ def url_handler(args=sys.argv):
     file = qkit.fid.get(uuid)
 
     repo = qkit.cfg.get("repo_path", default=None)
-    if file is None and QviewkitURLParser.HINT_ARGUMENT in kvargs and repo is not None:
+    logging.info("Repo Path: %s", repo)
+    if file is None and repo is not None:
+        logging.info("Searching in Repository...")
         end_at = time.time() + qkit.cfg.get("search_timeout_seconds", default=10)
         try:
             file = breadcrumb_search(Path(repo), uuid)
@@ -67,7 +71,7 @@ def url_handler(args=sys.argv):
 
     if file is not None:  # Success!
         logging.info(f"Opening file {file} derived from URL {qviewkit_url}")
-        main(argv=[args[0], "-f", file])
+        main(argv=[args[0], "-f", str(file)])
     else:  # Failure...
         logging.error(f"Could not find file based on URL {qviewkit_url}")
         main(argv=[args[0]])  # Opening empty window to signal error.
@@ -77,13 +81,18 @@ def breadcrumb_search(directory: Path, target_uuid: str, max_bruteforce_depth: i
     Search based on breadcrumbs. Each backed up computer creates a local index of known UUIDs. Applies to old
     files only in a limited fashion.
     """
+    logging.info("Investigating %s", directory)
     local_known_uuids = breadcrumbs.read_breadcrumbs(directory)
-    if len(local_known_uuids) != 0: # This is an indexed data_dir
+    if len(local_known_uuids.keys()) != 0: # This is an indexed data_dir
+        logging.info("Found Bread Crumbs with %d entries at %s", len(local_known_uuids.keys()), directory)
         if target_uuid in local_known_uuids:
-            return local_known_uuids[target_uuid] # We found the file, return it.
+            path = local_known_uuids[target_uuid]
+            logging.info("%s identified at %s", target_uuid, path)
+            return path # We found the file, return it.
         else:
+            logging.info("%s not present.", target_uuid)
             return None # We do not expect any results below this point.
-    else: # Unindexed directory
+    elif max_bruteforce_depth > 0: # Unindexed directory
         for child in directory.iterdir():
             if child.is_dir(): # Go into the child directories
                 result = breadcrumb_search(child, target_uuid, max_bruteforce_depth=max_bruteforce_depth - 1)
