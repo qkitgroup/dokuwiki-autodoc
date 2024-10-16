@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 import qkit
 from parsita.util import constant
 from qkit.gui.qviewkit.main import main
+from qkit.core.lib.file_service import breadcrumbs
 import logging
 from parsita import *
 import time
@@ -55,11 +56,11 @@ def url_handler(args=sys.argv):
     qkit.start()
     file = qkit.fid.get(uuid)
 
-    repo = qkit.cfg.get("repo_path", default=None)
+    repo = Path(qkit.cfg.get("repo_path", default=None))
     if file is None and QviewkitURLParser.HINT_ARGUMENT in kvargs and repo is not None:
         end_at = time.time() + qkit.cfg.get("search_timeout_seconds", default=10)
         try:
-            file = directed_search(repo, kvargs[QviewkitURLParser.HINT_ARGUMENT].split(";"), uuid, end_at)
+            file = breadcrumb_search(repo, uuid)
         except TimeoutError:
             logging.error(f"Search timed out.")
             file = None
@@ -70,6 +71,25 @@ def url_handler(args=sys.argv):
     else:  # Failure...
         logging.error(f"Could not find file based on URL {qviewkit_url}")
         main(argv=[args[0]])  # Opening empty window to signal error.
+
+def breadcrumb_search(directory: Path, target_uuid: str, max_bruteforce_depth: int = 3) -> Optional[str]:
+    """
+    Search based on breadcrumbs. Each backed up computer creates a local index of known UUIDs. Applies to old
+    files only in a limited fashion.
+    """
+    local_known_uuids = breadcrumbs.read_breadcrumbs(directory)
+    if len(local_known_uuids) != 0: # This is an indexed data_dir
+        if target_uuid in local_known_uuids:
+            return local_known_uuids[target_uuid] # We found the file, return it.
+        else:
+            return None # We do not expect any results below this point.
+    else: # Unindexed directory
+        for child in directory.iterdir():
+            if child.is_dir(): # Go into the child directories
+                result = breadcrumb_search(child, target_uuid, max_bruteforce_depth=max_bruteforce_depth - 1)
+                if result is not None:
+                    return result
+            
 
 
 def directed_search(directory: str, hints: list[str], target_uuid: str, end_time: float) -> Optional[str]:
