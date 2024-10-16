@@ -56,11 +56,11 @@ def url_handler(args=sys.argv):
     qkit.start()
     file = qkit.fid.get(uuid)
 
-    repo = Path(qkit.cfg.get("repo_path", default=None))
+    repo = qkit.cfg.get("repo_path", default=None)
     if file is None and QviewkitURLParser.HINT_ARGUMENT in kvargs and repo is not None:
         end_at = time.time() + qkit.cfg.get("search_timeout_seconds", default=10)
         try:
-            file = breadcrumb_search(repo, uuid)
+            file = breadcrumb_search(Path(repo), uuid)
         except TimeoutError:
             logging.error(f"Search timed out.")
             file = None
