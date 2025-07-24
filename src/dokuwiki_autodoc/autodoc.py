@@ -10,9 +10,8 @@ import liquid
 import copy
 import inspect
 from dokuwiki_autodoc.liquid_filters import dict2doku
-from liquid_babel.filters import Unit, Number
-from liquid.extra import add_inheritance_tags
-from liquid.loaders import DictLoader, CachingFileSystemLoader
+from liquid.extra import Unit, Number, ExtendsTag, BlockTag
+from liquid import DictLoader, CachingFileSystemLoader
 from importlib_resources import files  # TODO: Migrate to importlib.resources if python_required >= 3.9
 import numpy as np
 from .liquid_filters import BABEL_NUMBER_OPTIONS
@@ -169,7 +168,8 @@ class AutoDocumentation:
         env.add_filter("dict2doku", dict2doku)
         env.add_filter("decimal", Number(**BABEL_NUMBER_OPTIONS))
         env.add_filter("unit", Unit(default_length='short'))
-        add_inheritance_tags(env)
+        env.add_tag(ExtendsTag)
+        env.add_tag(BlockTag)
         return env
 
     @staticmethod
@@ -178,7 +178,7 @@ class AutoDocumentation:
         Load liquid templates. If no path is given, package templates are loaded.
         The package templates serve as a baseline and try to simplify interaction with qkit.
         """
-        if path == None:
+        if path is None:
             package = files("dokuwiki_autodoc.templates")
             templates = {resource.name: package.joinpath(resource.name).read_text()
                          for resource in package.iterdir() if resource.is_file() and resource.name.endswith(".liquid")}

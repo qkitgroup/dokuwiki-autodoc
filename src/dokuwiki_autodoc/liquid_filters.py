@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Optional
 from liquid.filter import liquid_filter, int_arg, with_context
-from liquid import Context
+from liquid import RenderContext
 import babel.numbers
 import math
 
@@ -13,7 +13,7 @@ BABEL_NUMBER_OPTIONS = {
 
 @liquid_filter
 @with_context
-def dict2doku(obj: object, *, context: Context, max_heading: Optional[object] = None) -> str:
+def dict2doku(obj: object, *, context: RenderContext, max_heading: Optional[object] = None) -> str:
     """
     Recursively convert an object structure into a DokuWiki String.
     """
@@ -53,7 +53,7 @@ def format_data(data, context):
     if isinstance(data, bool):
         return data
     if isinstance(data, (float, int, Decimal)) and not (math.isinf(data) or math.isnan(data)):
-        number_format = context.resolve("number_format", NUMBER_FORMAT)
-        locale = context.resolve("locale", "en_US")
+        number_format = context.resolve("number_format", default=NUMBER_FORMAT)
+        locale = context.resolve("locale", default="en_US")
         return babel.numbers.format_decimal(data, locale=locale, format=number_format)
     return data
