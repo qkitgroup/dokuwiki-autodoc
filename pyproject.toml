@@ -31,12 +31,8 @@ dependencies = [
   "dokuwiki >= 1.3.3",
   "python-liquid >= 2.0.0",
   "importlib-resources",
-  "parsita",
   "numpy"
 ]
-
-[project.scripts]
-qviewkit-url = "dokuwiki_autodoc.qviewkit_url_handler:url_handler"
 
 [project.optional-dependencies]
 certifi = ["certifi"]
