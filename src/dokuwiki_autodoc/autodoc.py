@@ -194,7 +194,7 @@ class _Object(object):
 
 class QkitDocumentationBuilder:
 
-    def __init__(self, autodoc: AutoDocumentation, overview_page: str, UUID: str = None):
+    def __init__(self, autodoc: AutoDocumentation, overview_page: str, UUID: str = None, capture_locals = False):
         """
         Generate a report from the last measurement performed in qkit. The report will be generated based on the measurement
         identified by `UUID` if set, otherwise the last measurement will be used.
@@ -213,6 +213,9 @@ class QkitDocumentationBuilder:
         self._data.overview_page = overview_page
         self._user_context = {}
         self._local_context = None
+
+        if capture_locals:
+            self.update_context_with_locals()
 
     def __enter__(self):
         try:
