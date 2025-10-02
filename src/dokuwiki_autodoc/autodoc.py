@@ -1,10 +1,11 @@
 import pathlib
 import re
+import textwrap
 
 import dokuwiki
 import getpass
 import logging
-from typing import Any, Callable, Dict, Iterable, List, Union
+from typing import Any, Callable, Dict, Iterable, List, Union, Optional
 from os import PathLike, path, listdir
 import liquid
 import copy
@@ -291,6 +292,20 @@ class QkitDocumentationBuilder:
         self._image_ids.sort(key=lambda entry: sort_metric(entry.split(':')[-1]))
         self._data.images = self._image_ids
 
+    def from_unified_measurement(self, experiment, setpoints: dict[str, tuple[float, str]]):
+        from qkit.measure.unified_measurements import Experiment
+        assert isinstance(experiment, Experiment), "Must be an instance of Experiment from unified_measurements!"
+        from dokuwiki_autodoc.unified_measurement_adapter import generate_summary, generate_sweep_summary, generate_setpoint_summary
+        self.upload_images()
+        self.update_context(**{
+            'title': experiment._name,
+            'setpoints': generate_setpoint_summary(setpoints),
+            'summary': generate_summary(experiment),
+            'axes': generate_sweep_summary(experiment),
+        })
+        self.generate_report_from_template_file("unified_exp_base.txt.liquid")
+
+
     def update_context(self, **context):
         """
         Provide user context defined from key-word arguments.
@@ -350,6 +365,10 @@ class QkitDocumentationBuilder:
             """
             self._columns.append(title)
             self._content.append(str(content(self._context)))
+
+        def from_unified(self, unified_experiment, setpoints):
+            from dokuwiki_autodoc.unified_measurement_adapter import create_table_entry
+            create_table_entry(self, unified_experiment, setpoints=setpoints)
 
         def __exit__(self, exc_type, exc_val, exc_tb):
             if exc_type is None and exc_val is None and exc_tb is None:
