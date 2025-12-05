@@ -23,7 +23,7 @@ def derive_table_slug(experiment: Experiment) -> str:
 def create_table_entry(tb: QkitDocumentationBuilder._TableBuilder, experiment: Experiment, setpoints: dict[str, tuple[float, str]]):
     # The builder already adds UUID and date
     tb.add_column("Type", lambda _: experiment._name)
-    for axes in list(_collect_axes(experiment)):
+    for axes in set(_collect_axes(experiment)):
         if len(axes.range) == 1:
             tb.add_column(f"{axes.name} [{axes.unit}]", lambda _: f"{axes.range[0]:.4e}")
         else:
