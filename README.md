@@ -51,6 +51,45 @@ qviewkit://UUID?hint=some;hint
 Here, `UUID` is the measurement you are interested in opening, and after `hint` a semicolon seperated list of strings 
 describes where it may be located, should it not be in the index. The hint is optional.
 
+## MCP Adapter (read-only agent access)
+This package ships a [Model Context Protocol](https://modelcontextprotocol.io) server that gives an LLM agent
+**read-only** access to your wiki. It is completely independent of the report-generation above and cannot modify
+the wiki in any way.
+
+Install the extra and run the server:
+```console
+pip install "dokuwiki-autodoc[mcp]"
+```
+
+Configure it in your MCP client (e.g. `.mcp.json`, Claude Desktop, VS Code):
+```json
+{
+  "mcpServers": {
+    "dokuwiki": {
+      "command": "dokuwiki-mcp",
+      "env": {
+        "DOKUWIKI_URL": "https://your.wiki/",
+        "DOKUWIKI_USER": "youruser",
+        "DOKUWIKI_PASSWORD": "yourpassword"
+      }
+    }
+  }
+}
+```
+
+The server exposes 16 tools: `search`, `list_pages`, `get_page` (raw wikitext), `get_page_html`, `get_page_info`,
+`get_page_permission`, `list_versions`, `list_changes`, `get_page_links`, `get_backlinks`, `list_medias`,
+`get_media_info`, `get_media` (base64), `get_struct_data`/`get_struct_schema` (if the [struct
+plugin](https://www.dokuwiki.org/plugin:struct) is installed), and `wiki_info`.
+
+Large pages are returned in chunks — follow the `next_offset` field of the response envelope to continue reading.
+Media transfers are capped at 1 MiB. ACLs are never bypassed: the agent sees what your configured user may see,
+and `get_page_permission` reports that permission level explicitly.
+
+Optional environment variables: `DOKUWIKI_USE_CERTIFI=1` (use the certifi trust store, mirroring
+`AutoDocumentation(..., use_certifi=True)`) and `DOKUWIKI_ALLOW_INVALID_CERTS=1` (disable TLS verification —
+dangerous, logs a warning, and never a tool parameter).
+
 ## Installation
 
 ```console

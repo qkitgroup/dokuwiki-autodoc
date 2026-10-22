@@ -1,0 +1,15 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/node:2.1.1": {},
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+        "ghcr.io/devcontainers-extra/features/uv:1": {}
+    },
+    "mounts": [
+        "source=claude-code-config-${devcontainerId},target=/home/vscode/.claude,type=volume"
+    ],
+    "containerEnv": {
+        "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+    }
+}
