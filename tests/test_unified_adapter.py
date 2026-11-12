@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from qkit.measure.unified_measurements import *
 from qkit.measure.samples_class import Sample
@@ -50,7 +52,7 @@ def test_end_to_end(qkit_fix, autodoc, unified_experiment):
     call_kwargs = autodoc.wiki.pages.set.call_args.kwargs
     assert len(call_args) == 2, "Invalid argument count!"
     assert call_args[0] == 'sample:test:qkit:RZDWVZ'
-    assert call_args[1] == open("./tests/unified-expected.txt").read(), f"Found:\n {call_args[1]}"
+    assert call_args[1] == (Path(__file__).parent / "unified-expected.txt").open("r").read(), f"Found:\n {call_args[1]}"
     assert call_kwargs['sum'] == 'Automatic Report Generation.'
 
 

@@ -1,7 +1,7 @@
 from typing import Any, Generator
 
 import numpy as np
-from qkit.measure.unified_measurements import Experiment, ParentOfMeasurements, ParentOfSweep, Sweep, Axis
+from qkit.measure.unified_measurements import Experiment, ASTNode, Sweep, Axis, MeasurementTypeAdapter
 
 from dokuwiki_autodoc.autodoc import QkitDocumentationBuilder, AutoDocumentation
 
@@ -56,22 +56,15 @@ def _build_sweep_summary(axis: Axis) -> Generator[str, Any, None]:
     yield _list_item(f"Steps: {len(axis.range)}")
 
 
-def _collect_axes(experiment: Experiment):
-    yield from _collect_measurement_axes(experiment)
-    if experiment._sweep_child is not None:
-        yield from _collect_sweep(experiment._sweep_child)
-
-
-def _collect_sweep(sweep: Sweep):
-    yield sweep._axis
-    yield from _collect_measurement_axes(sweep)
-    if sweep._sweep_child is not None:
-        yield from _collect_sweep(sweep._sweep_child)
-
-def _collect_measurement_axes(pom: ParentOfMeasurements):
-    for measurement in pom._measurements:
-        for es in measurement.expected_structure:
+def _collect_axes(node: ASTNode):
+    if isinstance(node, Sweep):
+        yield node._axis
+    if isinstance(node, MeasurementTypeAdapter):
+        for es in node.expected_structure:
             yield from es.axes
+    else:
+        for child in node._children:
+            yield from _collect_axes(child)
 
 def _heading(text: str, level: int):
     assert 0 <= level <= 5, "Heading level must be between 0 and 5."
@@ -81,31 +74,24 @@ def _heading(text: str, level: int):
 def _enumeration_item(text: str, level: int = 1):
     return "  " * level + "- " + text
 
-def _visit_sweep(sweep: Sweep, list_depth: int = 1):
-    """
-    Emit the current sweep, then the measurements, and then the child sweep.
-    """
-    axis = sweep._axis
-    sweep_description = f"{axis.name} ({np.min(axis.range)} {axis.unit} -> {np.max(axis.range)} {axis.unit}, {len(axis.range)} steps)"
-    yield _list_item(sweep_description, level=list_depth)
-    yield from _visit_measurements(sweep, list_depth=list_depth + 1)
-    if sweep._sweep_child is not None:
-        yield from _visit_sweep(sweep._sweep_child, list_depth=list_depth + 1)
-
 def _list_item(text: str, level: int = 1):
     return "  " * level + "* " + text
 
-def _visit_measurements(measurements: ParentOfMeasurements, list_depth: int = 0):
-    """
-    Emit the current
-    """
-    for measurement in measurements._measurements:
-        yield _enumeration_item(f"{type(measurement).__name__}", level=list_depth)
+
+def _visit_ast_node(node: ASTNode, list_depth: int = 0):
+    for child in node._children:
+        if isinstance(child, MeasurementTypeAdapter):
+            yield _enumeration_item(f"{type(child).__name__}", level=list_depth)
+        elif isinstance(child, Sweep):
+            axis = child._axis
+            sweep_description = f"{axis.name} ({np.min(axis.range)} {axis.unit} -> {np.max(axis.range)} {axis.unit}, {len(axis.range)} steps)"
+            yield _list_item(sweep_description, level=list_depth)
+            yield from _visit_ast_node(child, list_depth=list_depth + 1)
+        else:
+            raise TypeError(f"Unknown child type: {type(child)}")
 
 def _visit_experiment(experiment: Experiment):
     yield _heading(f"Experiment: {experiment._name}", level=0)
-    yield from _visit_measurements(experiment, list_depth=0)
-    if experiment._sweep_child is not None:
-        yield from _visit_sweep(experiment._sweep_child, list_depth=1)
+    yield from _visit_ast_node(experiment, list_depth=1)
 
 

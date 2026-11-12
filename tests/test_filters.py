@@ -59,7 +59,7 @@ This is a test!
 """
 
 EXPECTATION = r"""
-======   Measurement UUID ======
+======  Measurement UUID ======
 None with DNE by Me in run The Last One
 
 File: [[qviewkit://UUID|UUID]]

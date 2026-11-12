@@ -30,7 +30,8 @@ dependencies = [
   "dokuwiki >= 1.3.3",
   "python-liquid >= 2.0.0",
   "importlib-resources",
-  "numpy"
+  "numpy",
+  "pytest>=9.2.0",
 ]
 
 [project.optional-dependencies]
@@ -52,7 +53,7 @@ dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
   "pytest-mock",
-  "qkit>=0.5.3"
+  "qkit>=0.7.0"
 ]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"

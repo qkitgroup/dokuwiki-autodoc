@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from dokuwiki_autodoc.autodoc import AutoDocumentation, QkitDocumentationBuilder
 from time import time
 import pytest
@@ -108,8 +110,8 @@ More content
 @pytest.fixture
 def qkit_fix(mocker):
     import qkit
-    qkit.cfg['datadir'] = os.path.abspath("./tests/test_data/")
-    qkit.cfg['logdir'] = os.path.abspath("./tests/qkit-log/")
+    qkit.cfg['datadir'] = os.path.abspath(Path(__file__).parent / "test_data")
+    qkit.cfg['logdir'] = os.path.abspath(Path(__file__).parent / "qkit-log")
     qkit.start()
     qkit.fid.update_file_db()
 
